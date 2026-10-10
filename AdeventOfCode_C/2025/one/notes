@@ -1,0 +1,11 @@
+Dial is from numbers 0 to 99 in order
+Input = A sequence of rotations
+    L is towards lower numbers
+    R is towards higher numbers
+    # is the distance you have to rotate
+Rotational - possible to go left from 0 to 99 or right 99 to 0
+    Modulo needed at a 100?
+    -1 % 100 = 99 <- so negative numbers will work in modulo
+How many times is the number left pointing at 0?
+
+
