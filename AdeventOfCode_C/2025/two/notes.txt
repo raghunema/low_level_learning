@@ -1,0 +1,25 @@
+Problem 1: 
+Given a list of product ID ranges, for each range find invalud prodcut ids
+What is an Invalid product
+    - If it has repeating sequence inside of it
+    ex: Range is 6462-6468
+        6462
+        6463
+        6464 has '64' repeating
+        6465
+        6466
+        6467
+        6468
+
+This is a string composition problem, not a number problem?
+Is substring 0-i the same as  i+1:-1
+    Only repeated twice - so the string has to be even in digits so u can split it in half
+    Only consisted of a repeating pattern - which means u can't have a number in the middle
+        ex: 55055 can't split into '55' and '55' with 0 in the middle
+
+Solution approach: 
+For each range, 
+    For each number,
+        Check if that number has even digits
+            Check if the first substring = second substring
+                Add to total if true 
