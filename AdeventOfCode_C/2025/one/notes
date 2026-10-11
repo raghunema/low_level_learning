@@ -9,3 +9,32 @@ Rotational - possible to go left from 0 to 99 or right 99 to 0
 How many times is the number left pointing at 0?
 
 
+Part 2:
+    Same rotation method, but now checking how many times it crosses over 0 instead of it being exactly 0
+
+Ex: 
+    Step_1: 50
+    L68
+    Step_2: 82 <- Update Password (Went over 0)
+        Modulo 100 = 82 but still 0, 82
+    L23
+    Step 3: 50 <- No update required
+
+Idea: 
+    Basically check if
+        1. Curr_Location - Rotation < 0 if going left
+        2. Curr_Location + Rotation > 100 if going right
+    OR  
+        1. Rotation > 100 - Curr_Location if R
+        2. Rotation > Curr_Location - 0 if L 
+    Then we passed over 0 
+        I.e if modulo triggered??
+    
+
+
+
+build command:
+    clang Day1Puzzle1.c -o Day1Puzzle1
+run by calling:
+    ./Day1Puzzle1
+
