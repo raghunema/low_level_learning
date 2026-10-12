@@ -1,0 +1,5 @@
+
+GetLine:    
+    keyboard writes to stdin <- use that as the input stream
+    Creates a buffer on the fly as the buffer is pointing to NULL
+    Then passes the buffer's address to the character line
