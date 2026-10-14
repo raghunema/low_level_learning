@@ -3,8 +3,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define BUFSIZ 1024
-
 int main(void) {
 
     bool run_shell = true;
@@ -45,25 +43,22 @@ int main(void) {
 
         //"Hello World"
         char* temp_token = strtok(line, tokensplitters); //a string defined as a char pointer
-        printf("New Token address: %p\n", &temp_token); //0x16f81cb10
-        printf("New Token actual value: %p\n", (void *)temp_token); //0x102941cf0
-        printf("New Token str value: %s\n", temp_token); //"Hello"
-        printf("New Token index 0: %c\n", temp_token[0]); //'H' or *(temp_token)
-        printf("New Token index 0 address: %p\n", &temp_token[0]); //0x102941cf0
-
-        //So tokens should be an array of char* 's
-        // char* tokens[1000] //an array of 1000 (arbritary size) strings
         tokens[num_tokens] = temp_token;
-        printf("Token one: %s\n", tokens[num_tokens]); //Hello
-        printf("Token one actual value: %p\n", tokens[num_tokens]); //0x102941cf0
+        printf("Token one: %s at index: %zu\n", tokens[num_tokens], num_tokens); //Hello
 
         //keep iterating
         while(temp_token != NULL && num_tokens < (BUFSIZ - 1)){
-            tokens[num_tokens] = strtok(NULL, tokensplitters);
-            printf("New Token: %s\n", tokens[num_tokens]);
+            temp_token = strtok(NULL, tokensplitters);
             num_tokens++;
-        }
+            tokens[num_tokens] = temp_token;
 
+            printf("Temp_token %s at index: %zu\n", temp_token, num_tokens);
+            if (temp_token != NULL) {
+                printf("New Token: %s\n", tokens[num_tokens]);
+            }
+            
+        }
+        
     }
 
     free(line);
