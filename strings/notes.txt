@@ -1,0 +1,7 @@
+a char type is just a small integer: from 0 to 255
+terminal/printer/display treats will simply display it as a character
+you cant initialize it to a nothing state as even 0 is still something
+
+"" is an array of just one char: {'\0'}
+'\0' is an int (all chars are number/ints)
+char test_str = "" is improper as we char data type is trying to look for an int but "" (a string) is trying to make into a pointer
