@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define MAX_TOKENS 1024
+
 int main(void) {
 
     bool run_shell = true;
@@ -12,7 +14,7 @@ int main(void) {
     ssize_t linelen; //length of the line
 
     char *tokensplitters = " \t\n"; //user for strtok
-    char *tokens[BUFSIZ]; //intitializing an array of strings
+    char *tokens[MAX_TOKENS]; //intitializing an array of strings
 
     //read a line, print a line
     while (run_shell) {
@@ -39,24 +41,21 @@ int main(void) {
 
         //parse the line
         size_t num_tokens = 0;
-        //tokens[num_tokens] = strtok(line, tokensplitters);
-
-        //"Hello World"
         char* temp_token = strtok(line, tokensplitters); //a string defined as a char pointer
-        tokens[num_tokens] = temp_token;
-        printf("Token one: %s at index: %zu\n", tokens[num_tokens], num_tokens); //Hello
-
+       
         //keep iterating
-        while(temp_token != NULL && num_tokens < (BUFSIZ - 1)){
-            temp_token = strtok(NULL, tokensplitters);
-            num_tokens++;
+        while(temp_token != NULL && num_tokens < (MAX_TOKENS - 1)){
             tokens[num_tokens] = temp_token;
-
-            printf("Temp_token %s at index: %zu\n", temp_token, num_tokens);
-            if (temp_token != NULL) {
-                printf("New Token: %s\n", tokens[num_tokens]);
-            }
+            //printf("Token %s at index: %zu\n", tokens[num_tokens], num_tokens); //Hello
             
+            num_tokens++;
+            temp_token = strtok(NULL, tokensplitters); //a string defined as a char pointer
+        }
+
+        tokens[num_tokens] = NULL;
+
+        if (num_tokens == 0) {
+            continue;
         }
         
     }
