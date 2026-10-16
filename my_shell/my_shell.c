@@ -2,9 +2,56 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <errno.h> //to get global errno var
+#include <unistd.h> //for execvp function
+#include <sys/wait.h> //for waitpud function
 
 #define MAX_TOKENS 1024
 
+// Actually launches the programs once we parse the input
+int launch(char **tokens) {
+
+    pid_t childPid = fork(); //create a copy of the request
+    if (childPid == -1) {
+        int error = errno;
+
+        //fprintf allows us to send message to Standard Error Stream
+        fprintf(stderr, "Fork process failure, error number: %d, error: %s\n", error, strerror(error));
+        return EXIT_FAILURE;
+    } else if (childPid == 0) {
+        //childPid == 0 if I am in the child process -> only then run execVP
+
+        int executed_process = execvp(tokens[0], tokens);
+        if (executed_process == -1) {
+            int error = errno;
+
+            fprintf(stderr, "Process ExecVp failure, error number: %d, error: %s\n", error, strerror(error));
+            _exit(error); //exits the child process if execute failed
+        }
+
+    } else if (childPid > 0) {
+        //only if child process actually started wait for it
+
+        int childStatus;
+        pid_t wait_child = waitpid(childPid, &childStatus, 0);
+
+        if (wait_child == -1) {
+            int error = errno;
+
+            fprintf(stderr, "Wait process failure, error number: %d, error: %s\n", error, strerror(error));
+            return EXIT_FAILURE;
+        }
+
+        if (WIFEXITED(childStatus)) {
+           return WEXITSTATUS(childStatus);
+        } else if (WIFSIGNALED(childStatus)) {
+            return 128 + WTERMSIG(childStatus); //terminaition signal? Why is convetion to add 128?
+        }
+    }
+
+    return EXIT_FAILURE;
+}
+ 
 int main(void) {
 
     bool run_shell = true;
@@ -54,9 +101,13 @@ int main(void) {
 
         tokens[num_tokens] = NULL;
 
+        //skip this since we will never get to fork?
         if (num_tokens == 0) {
             continue;
-        }
+        } 
+
+        //pass in the address of tokens, not a full copy?
+        int child_process = launch(tokens);
         
     }
 

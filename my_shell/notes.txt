@@ -3,3 +3,30 @@ GetLine:
     keyboard writes to stdin <- use that as the input stream
     Creates a buffer on the fly as the buffer is pointing to NULL
     Then passes the buffer's address to the character line
+
+
+Need to read the man pages of fork, execvp, and waitpid
+What do they do? What are their return cases?
+
+Fork: 
+    Shall be an exact copy of the calling process
+    So we need to make a copy of our current shell process? And then run execvp in that?
+
+    Success: Returns 0 and the PID of the child process
+    Error: Returns -1 and ErroNo set to indicate error, no child process created 
+
+ExceVp:
+    Replaces(!) the current process image with something else 
+    This means the rest of the shell main loop will get replacesd?
+    So use this in the fork() function?
+    Takes in a series of \0 terminated strings (arguments) that end with a NULL <- exactly how tokens[] is set up
+        arg0 by convention is the file name to execute
+
+    Fail with error code -1 and set the error code to errno arg
+
+WaitPid: 
+    Gets the status information about one of a processes' child process
+    Need to pass in the pId of the child process
+    Use it to see when a child process finishes
+    Options = 0 (for blocking mode to see when it finishes)
+        Parent process (my shell) will wait. 
